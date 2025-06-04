@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="space-y-8">
+    <h2 class="text-2xl font-bold">Admin Dashboard</h2>
+    
+    <!-- Add Employee -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4">Add New Employee</h3>
+        <form method="POST" class="space-y-4 mb-6">
+            <div>
+                <label for="new_username" class="block text-sm font-medium">Username</label>
+                <input type="text" id="new_username" name="new_username" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="new_password" class="block text-sm font-medium">Password</label>
+                <input type="password" id="new_password" name="new_password" class="w-full p-2 border rounded" required>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Add Employee</button>
+        </form>
+    </div>
+    
+    <!-- Employee Attendance -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4">Employee Attendance</h3>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Employee</th>
+                    <th class="border p-2">Date</th>
+                    <th class="border p-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance %}
+                <tr>
+                    <td class="border p-2">{{ record.username }}</td>
+                    <td class="border p-2">{{ record.date }}</td>
+                    <td class="border p-2">{{ record.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Leave Requests -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4">Leave Requests</h3>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Employee</th>
+                    <th class="border p-2">Type</th>
+                    <th class="border p-2">Start Date</th>
+                    <th class="border p-2">End Date</th>
+                    <th class="border p-2">Reason</th>
+                    <th class="border p-2">Status</th>
+                    <th class="border p-2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td class="border p-2">{{ leave.username }}</td>
+                    <td class="border p-2">{{ leave.leave_type }}</td>
+                    <td class="border p-2">{{ leave.start_date }}</td>
+                    <td class="border p-2">{{ leave.end_date }}</td>
+                    <td class="border p-2">{{ leave.reason }}</td>
+                    <td class="border p-2">{{ leave.status }}</td>
+                    <td class="border p-2">
+                        {% if leave.status == 'pending' %}
+                        <form method="POST" class="flex space-x-2">
+                            <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                            <button type="submit" name="action" value="approve" class="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700">Approve</button>
+                            <button type="submit" name="action" value="reject" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Reject</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

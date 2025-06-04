@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="space-y-8">
+    <h2 class="text-2xl font-bold">Employee Dashboard</h2>
+    
+    <!-- Mark Attendance -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4">Mark Attendance</h3>
+        <form method="POST" class="mb-4">
+            <button type="submit" name="mark_attendance" class="bg-green-600 text-white p-2 rounded hover:bg-green-700">Mark Present</button>
+        </form>
+        <h4 class="text-lg font-medium mb-2">Attendance History</h4>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Date</th>
+                    <th class="border p-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance %}
+                <tr>
+                    <td class="border p-2">{{ record.date }}</td>
+                    <td class="border p-2">{{ record.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Apply for Leave -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4">Apply for Leave</h3>
+        <form method="POST" class="space-y-4">
+            <div>
+                <label for="leave_type" class="block text-sm font-medium">Leave Type</label>
+                <select id="leave_type" name="leave_type" class="w-full p-2 border rounded" required>
+                    <option value="sick">Sick Leave</option>
+                    <option value="casual">Casual Leave</option>
+                    <option value="annual">Annual Leave</option>
+                </select>
+            </div>
+            <div>
+                <label for="start_date" class="block text-sm font-medium">Start Date</label>
+                <input type="date" id="start_date" name="start_date" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="end_date" class="block text-sm font-medium">End Date</label>
+                <input type="date" id="end_date" name="end_date" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="reason" class="block text-sm font-medium">Reason</label>
+                <textarea id="reason" name="reason" class="w-full p-2 border rounded" rows="4"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Submit Leave Request</button>
+        </form>
+        <h4 class="text-lg font-medium mt-6 mb-2">Leave History</h4>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border p-2">Type</th>
+                    <th class="border p-2">Start Date</th>
+                    <th class="border p-2">End Date</th>
+                    <th class="border p-2">Reason</th>
+                    <th class="border p-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td class="border p-2">{{ leave.leave_type }}</td>
+                    <td class="border p-2">{{ leave.start_date }}</td>
+                    <td class="border p-2">{{ leave.end_date }}</td>
+                    <td class="border p-2">{{ leave.reason }}</td>
+                    <td class="border p-2">{{ leave.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
